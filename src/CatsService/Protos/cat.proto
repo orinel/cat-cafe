@@ -10,7 +10,7 @@ import "google/protobuf/empty.proto";
 
 service Cats {
   // Get list of cats
-  rpc ListCats (google.protobuf.Empty) returns (ListCatsReply);
+  rpc ListCats (google.protobuf.Empty) returns (ListCatsResponse);
   // Get cat by id
   rpc GetCat (GetCatRequest) returns (GetCatResponse);
 }
@@ -41,7 +41,7 @@ message  CatItem {
   google.protobuf.Timestamp created_at = 6;
 }
 
-message ListCatsReply {
+message ListCatsResponse {
   repeated CatItem cats = 1;
 }
 

@@ -13,11 +13,11 @@ public class CatsService : Cats.CatsBase
         this.repository = repository;
     }
     
-    public override Task<ListCatsReply> ListCats(
+    public override Task<ListCatsResponse> ListCats(
         Empty request,
         ServerCallContext context)
     {
-        var reply = new ListCatsReply();
+        var reply = new ListCatsResponse();
         reply.Cats.AddRange(repository.GetAllCats());
         return Task.FromResult(reply);
     }
