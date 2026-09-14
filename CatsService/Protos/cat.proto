@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+option csharp_namespace = "CatsGrpcService";
+
+package cat;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+
+service Cats {
+  // Get list of cats
+  rpc ListCats (google.protobuf.Empty) returns (ListCatsReply);
+  // Get cat by id
+  rpc GetCat (GetCatRequest) returns (GetCatResponse);
+}
+
+enum Breed {
+    DOMESTIC_CAT = 0;
+    MAINE_COON = 1;
+    RAGDOLL = 2;
+    SPHYNX = 3;
+    PERSIAN = 4;
+    BRITISH_SHORTHAIR = 5;
+    AMERICAN_SHORTHAIR = 6;
+    SIBERIAN = 7;
+}
+
+enum CatStatus {
+    UNAVAILABLE = 0;
+    RESTING = 1;
+    AVAILABLE = 2;
+}
+
+message  CatItem {
+  int32 id = 1;
+  string name = 2;
+  int32 age = 3;
+  Breed breed = 4;
+  CatStatus status = 5;
+  google.protobuf.Timestamp created_at = 6;
+}
+
+message ListCatsReply {
+  repeated CatItem cats = 1;
+}
+
+message GetCatRequest {
+  int32 id = 1;
+}
+
+message GetCatResponse {
+  CatItem cat = 1;
+}
