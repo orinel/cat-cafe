@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "CatsGrpcService";
+option csharp_namespace = "CatService";
 
 package cat;
 

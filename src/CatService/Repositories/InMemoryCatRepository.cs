@@ -1,5 +1,6 @@
-using CatsGrpcService;
-using CatsService.Repositories;
+namespace CatService.Repositories;
+
+using CatService.Repositories;
 
 public class InMemoryCatRepository : ICatRepository
 {

@@ -2,9 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CatsService", "CatsService", "{DB0E361E-332C-F80F-17AF-3599B1E0797B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CatService", "CatService", "{DB0E361E-332C-F80F-17AF-3599B1E0797B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatService", "src\CatsService\CatService.csproj", "{DF91ADD8-7A3F-4D15-A947-1F0D281BF394}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatService", "src\CatService\CatService.csproj", "{DF91ADD8-7A3F-4D15-A947-1F0D281BF394}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{C8E42992-5E42-0C2B-DBFE-AA848D06431C}"
 EndProject

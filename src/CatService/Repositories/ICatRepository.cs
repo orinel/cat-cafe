@@ -1,6 +1,6 @@
-namespace CatsService.Repositories;
+namespace CatService.Repositories;
 
-using CatsGrpcService;
+using CatService;
 
 public interface ICatRepository
 {

@@ -1,11 +1,11 @@
-﻿using Grpc.Core;
-using CatsService.Repositories;
-using CatCafe.Contracts.Pagination;
+﻿using CatCafe.Contracts.Pagination;
+using CatService.Repositories;
+using Grpc.Core;
 using Pagination;
 
-namespace CatsGrpcService;
+namespace CatService;
 
-public class CatsService(ICatRepository repository) : Cats.CatsBase
+public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
 {
     
     public override Task<ListCatsResponse> ListCats(
