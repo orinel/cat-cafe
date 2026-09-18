@@ -1,7 +1,8 @@
 ﻿using CatCafe.Contracts.Pagination;
 using CatService.Repositories;
 using Grpc.Core;
-using Pagination;
+using Shared.Pagination;
+using Shared.Filtering;
 
 namespace CatService;
 
@@ -9,14 +10,22 @@ public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
 {
     
     public override Task<ListCatsResponse> ListCats(
-        PaginationRequest request,
+        ListCatsRequest request,
         ServerCallContext context)
     {
         var reply = new ListCatsResponse();
+
+        var cats = repository.GetAllCats();
+
+        if (request.HasStatus)
+        {
+            cats = Filtering.Filter(cats, cat => cat.Status == request.Status);
+        }
+        
         var pageCats = Paginator.Paginate(
-            repository.GetAllCats(),
-            request.Page,
-            request.PageSize);
+            cats,
+            request.Pagination.Page,
+            request.Pagination.PageSize);
         
         reply.Cats.AddRange(pageCats.Items);
         
