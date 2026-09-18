@@ -1,4 +1,4 @@
-namespace Pagination;
+namespace Shared.Pagination;
 
 public class PageResult<T>(
     List<T> items,
