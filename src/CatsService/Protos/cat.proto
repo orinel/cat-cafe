@@ -5,12 +5,12 @@ option csharp_namespace = "CatsGrpcService";
 package cat;
 
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/empty.proto";
+import "common/pagination.proto";
 
 
 service Cats {
   // Get list of cats
-  rpc ListCats (google.protobuf.Empty) returns (ListCatsResponse);
+  rpc ListCats (common.pagination.PaginationRequest) returns (ListCatsResponse);
   // Get cat by id
   rpc GetCat (GetCatRequest) returns (GetCatResponse);
 }
@@ -43,6 +43,7 @@ message  CatItem {
 
 message ListCatsResponse {
   repeated CatItem cats = 1;
+  common.pagination.PaginationResponse pagination = 2;
 }
 
 message GetCatRequest {

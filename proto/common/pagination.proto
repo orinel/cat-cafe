@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "CatCafe.Contracts.Pagination";
+
+package common.pagination;
+
+message PaginationRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+
+message PaginationResponse {
+  int32 page = 1;
+  int32 page_size = 2;
+  int32 total_items = 3;
+  int32 total_pages = 4;
+}

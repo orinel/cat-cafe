@@ -1,24 +1,34 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using Grpc.Core;
+﻿using Grpc.Core;
 using CatsService.Repositories;
+using CatCafe.Contracts.Pagination;
+using Pagination;
 
 namespace CatsGrpcService;
 
-public class CatsService : Cats.CatsBase
+public class CatsService(ICatRepository repository) : Cats.CatsBase
 {
-    private readonly ICatRepository repository;
-
-    public CatsService(ICatRepository repository)
-    {
-        this.repository = repository;
-    }
     
     public override Task<ListCatsResponse> ListCats(
-        Empty request,
+        PaginationRequest request,
         ServerCallContext context)
     {
         var reply = new ListCatsResponse();
-        reply.Cats.AddRange(repository.GetAllCats());
+        var pageCats = Paginator.Paginate(
+            repository.GetAllCats(),
+            request.Page,
+            request.PageSize);
+        
+        reply.Cats.AddRange(pageCats.Items);
+        
+        var pagination = new PaginationResponse
+        {
+            Page =  pageCats.PageNumber,
+            PageSize = pageCats.PageSize,
+            TotalItems = pageCats.TotalCount,
+            TotalPages = pageCats.TotalPages,
+        };
+        
+        reply.Pagination = pagination;
         return Task.FromResult(reply);
     }
 
