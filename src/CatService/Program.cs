@@ -1,11 +1,15 @@
-using CatService;
 using CatService.Repositories;
+using CatService.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddGrpc();
 builder.Services.AddSingleton<ICatRepository, InMemoryCatRepository>();
+builder.Services.AddDbContext<CatCafeDbContext>(options =>
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("CatCafe")));
 
 var app = builder.Build();
 
