@@ -39,5 +39,32 @@ public class CatCafeDbContext : DbContext
                 .HasColumnName("created_at")
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
         });
+        
+        modelBuilder.Entity<CatEntity>().HasData(
+            new CatEntity
+            {
+                Id = 1,
+                Name = "Барсик",
+                Age = 3,
+                Breed = Breed.DomesticCat,
+                Status = CatStatus.Available
+            },
+            new CatEntity
+            {
+                Id = 2,
+                Name = "Мурзик",
+                Age = 5,
+                Breed = Breed.DomesticCat,
+                Status = CatStatus.Available
+            },
+            new CatEntity
+            {
+                Id = 3,
+                Name = "Васька",
+                Age = 2,
+                Breed = Breed.DomesticCat,
+                Status = CatStatus.Resting
+            }
+        );
     }
 }
