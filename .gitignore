@@ -5,6 +5,7 @@
 
 
 .idea
+.env
 bin/
 obj/
 
