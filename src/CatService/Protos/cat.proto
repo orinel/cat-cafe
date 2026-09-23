@@ -13,6 +13,8 @@ service Cats {
   rpc ListCats (ListCatsRequest) returns (ListCatsResponse);
   // Get cat by id
   rpc GetCat (GetCatRequest) returns (GetCatResponse);
+  //Create new cat
+  rpc CreateCat (CreateCatRequest) returns (CreateCatResponse);
 }
 
 enum Breed {
@@ -67,5 +69,15 @@ message GetCatRequest {
 }
 
 message GetCatResponse {
+  CatItem cat = 1;
+}
+
+message CreateCatRequest{
+  string name = 1;
+  int32 age = 2;
+  Breed breed = 3;
+}
+
+message CreateCatResponse {
   CatItem cat = 1;
 }

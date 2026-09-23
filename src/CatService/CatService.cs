@@ -3,11 +3,61 @@ using CatService.Repositories;
 using Grpc.Core;
 using Shared.Pagination;
 using Shared.Filtering;
+using System.Text.RegularExpressions;
 
 namespace CatService;
 
 public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
 {
+    
+    public override Task<CreateCatResponse> CreateCat(
+        CreateCatRequest request, 
+        ServerCallContext context)
+
+    {
+        var response = new CreateCatResponse();
+        
+        if (string.IsNullOrWhiteSpace(request.Name))
+        {
+            throw new RpcException(
+                new Status(StatusCode.InvalidArgument, "Name is required."));
+        }
+        
+        if (request.Name.Length > 100)
+        {
+            throw new RpcException(
+                new Status(StatusCode.InvalidArgument, "Name must be no more than 100 characters."));
+        }
+        
+        if (!Regex.IsMatch(request.Name, @"^[A-Za-zА-Яа-яЁё]+$"))
+        {
+            throw new RpcException(
+                new Status(StatusCode.InvalidArgument, "Name must contain only Latin or Cyrillic letters."));
+        }
+        
+        if (request.Age < 1 || request.Age > 20)
+        {
+            throw new RpcException(
+                new Status(StatusCode.InvalidArgument, "Age must be between 1 and 20."));
+        }
+        
+        if (repository.GetAllCats()
+            .Any(cat => string.Equals(
+                cat.Name,
+                request.Name,
+                StringComparison.OrdinalIgnoreCase)))
+        {
+            throw new RpcException(
+                new Status(
+                    StatusCode.AlreadyExists,
+                    $"Cat with name '{request.Name}' already exists."));
+        }
+
+        var cat = repository.CreateCat(request.Name, request.Age, request.Breed);
+
+        response.Cat = cat;
+        return Task.FromResult(response);
+    }
     
     public override Task<ListCatsResponse> ListCats(
         ListCatsRequest request,
