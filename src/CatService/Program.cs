@@ -1,13 +1,26 @@
-using CatService;
 using CatService.Repositories;
+using CatService.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Register application services
 builder.Services.AddGrpc();
-builder.Services.AddSingleton<ICatRepository, InMemoryCatRepository>();
+builder.Services.AddScoped<ICatRepository, PostgresCatRepository>();
+
+// Register database context
+builder.Services.AddDbContext<CatCafeDbContext>(options =>
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("CatCafe")));
 
 var app = builder.Build();
+
+// Apply pending database migrations
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<CatCafeDbContext>();
+    db.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 app.MapGrpcService<CatService.CatGrpcService>();

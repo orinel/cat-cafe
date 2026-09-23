@@ -1,7 +1,5 @@
 namespace CatService.Repositories;
 
-using CatService.Repositories;
-
 public class InMemoryCatRepository : ICatRepository
 {
     private List<CatItem> CatsList { get; }  = 

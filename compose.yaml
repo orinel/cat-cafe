@@ -1,0 +1,39 @@
+services:
+  catservice-db:
+    image: postgres:17
+    container_name: catcafe-catservice-db
+    environment:
+      POSTGRES_DB: ${CAT_SERVICE_DB_NAME}
+      POSTGRES_USER: ${CAT_SERVICE_DB_USER}
+      POSTGRES_PASSWORD: ${CAT_SERVICE_DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - catservice_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${CAT_SERVICE_DB_USER} -d ${CAT_SERVICE_DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  cat-service:
+    build:
+      context: .
+      dockerfile: src/CatService/Dockerfile
+    container_name: catcafe-cat-service
+    environment:
+      ConnectionStrings__CatCafe: "Host=catservice-db;Port=5432;Database=${CAT_SERVICE_DB_NAME};Username=${CAT_SERVICE_DB_USER};Password=${CAT_SERVICE_DB_PASSWORD}"
+      ASPNETCORE_Kestrel__EndpointDefaults__Protocols: Http2
+    ports:
+      - "5037:8080"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      catservice-db:
+        condition: service_healthy
+
+volumes:
+  catservice_postgres_data:
