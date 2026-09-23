@@ -22,6 +22,11 @@ public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
             cats = Filtering.Filter(cats, cat => cat.Status == request.Status);
         }
         
+        if (request.HasActivity)
+        {
+            cats = Filtering.Filter(cats, cat => cat.Activity == request.Activity);
+        }
+        
         var pageCats = Paginator.Paginate(
             cats,
             request.Pagination.Page,

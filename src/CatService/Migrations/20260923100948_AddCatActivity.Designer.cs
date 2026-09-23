@@ -3,6 +3,7 @@ using System;
 using CatService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CatService.Migrations
 {
     [DbContext(typeof(CatCafeDbContext))]
-    partial class CatCafeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260923100948_AddCatActivity")]
+    partial class AddCatActivity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,7 +70,7 @@ namespace CatService.Migrations
                         new
                         {
                             Id = 1,
-                            Activity = 2,
+                            Activity = 0,
                             Age = 3,
                             Breed = 0,
                             CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -77,7 +80,7 @@ namespace CatService.Migrations
                         new
                         {
                             Id = 2,
-                            Activity = 4,
+                            Activity = 0,
                             Age = 5,
                             Breed = 0,
                             CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -87,7 +90,7 @@ namespace CatService.Migrations
                         new
                         {
                             Id = 3,
-                            Activity = 3,
+                            Activity = 0,
                             Age = 2,
                             Breed = 0,
                             CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),

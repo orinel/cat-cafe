@@ -16,20 +16,29 @@ service Cats {
 }
 
 enum Breed {
-    DOMESTIC_CAT = 0;
-    MAINE_COON = 1;
-    RAGDOLL = 2;
-    SPHYNX = 3;
-    PERSIAN = 4;
-    BRITISH_SHORTHAIR = 5;
-    AMERICAN_SHORTHAIR = 6;
-    SIBERIAN = 7;
+  DOMESTIC_CAT = 0;
+  MAINE_COON = 1;
+  RAGDOLL = 2;
+  SPHYNX = 3;
+  PERSIAN = 4;
+  BRITISH_SHORTHAIR = 5;
+  AMERICAN_SHORTHAIR = 6;
+  SIBERIAN = 7;
 }
 
 enum CatStatus {
-    UNAVAILABLE = 0;
-    RESTING = 1;
-    AVAILABLE = 2;
+  UNAVAILABLE = 0;
+  BOOKED = 1;
+  AVAILABLE = 2;
+}
+
+enum CatActivity {  
+  IDLE = 0;
+  PLAYING = 1;
+  EATING = 2;
+  RESTING = 3;
+  GROOMING = 4;
+  VET_CARE = 5;
 }
 
 message  CatItem {
@@ -38,12 +47,14 @@ message  CatItem {
   int32 age = 3;
   Breed breed = 4;
   CatStatus status = 5;
-  google.protobuf.Timestamp created_at = 6;
+  CatActivity activity = 6;
+  google.protobuf.Timestamp created_at = 7;
 }
 
 message ListCatsRequest {
   common.pagination.PaginationRequest pagination = 1;
   optional CatStatus status = 2;
+  optional CatActivity activity = 3;
 }
 
 message ListCatsResponse {

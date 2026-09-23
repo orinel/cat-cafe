@@ -4,12 +4,12 @@ public class InMemoryCatRepository : ICatRepository
 {
     private List<CatItem> CatsList { get; }  = 
     [
-        CreateCat(1, "Барсик", 3, Breed.DomesticCat, CatStatus.Available),
-        CreateCat(2, "Мурзик", 5, Breed.DomesticCat, CatStatus.Available),
-        CreateCat(3, "Васька", 2, Breed.DomesticCat, CatStatus.Resting),
+        CreateCat(1, "Барсик", 3, Breed.DomesticCat, CatStatus.Available, CatActivity.Eating),
+        CreateCat(2, "Мурзик", 5, Breed.DomesticCat, CatStatus.Available, CatActivity.Grooming),
+        CreateCat(3, "Васька", 2, Breed.DomesticCat, CatStatus.Booked, CatActivity.Resting),
     ];
 
-    private static CatItem CreateCat(int id, string name, int age, Breed breed, CatStatus status)
+    private static CatItem CreateCat(int id, string name, int age, Breed breed, CatStatus status, CatActivity activity)
     {
         return new CatItem
         {
@@ -17,7 +17,8 @@ public class InMemoryCatRepository : ICatRepository
             Name = name,
             Age = age,
             Breed = breed,
-            Status = status
+            Status = status,
+            Activity = activity,
         };
     }
     
