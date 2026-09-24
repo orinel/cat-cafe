@@ -64,7 +64,7 @@ public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
         ListCatsRequest request,
         ServerCallContext context)
     {
-        var reply = new ListCatsResponse();
+        var response = new ListCatsResponse();
 
         var cats = repository.GetAllCats();
 
@@ -83,7 +83,7 @@ public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
             request.Pagination.Page,
             request.Pagination.PageSize);
         
-        reply.Cats.AddRange(pageCats.Items);
+        response.Cats.AddRange(pageCats.Items);
         
         var pagination = new PaginationResponse
         {
@@ -93,8 +93,8 @@ public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
             TotalPages = pageCats.TotalPages,
         };
         
-        reply.Pagination = pagination;
-        return Task.FromResult(reply);
+        response.Pagination = pagination;
+        return Task.FromResult(response);
     }
 
     public override Task<GetCatResponse> GetCat(
