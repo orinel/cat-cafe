@@ -2,7 +2,16 @@ using CatService.Repositories;
 using CatService.Data;
 using Microsoft.EntityFrameworkCore;
 
+DotNetEnv.Env.TraversePath().Load();
+
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString =
+    $"Host=localhost;" +
+    $"Port=5432;" +
+    $"Database={Environment.GetEnvironmentVariable("CAT_SERVICE_DB_NAME")};" +
+    $"Username={Environment.GetEnvironmentVariable("CAT_SERVICE_DB_USER")};" +
+    $"Password={Environment.GetEnvironmentVariable("CAT_SERVICE_DB_PASSWORD")}";
 
 // Register application services
 builder.Services.AddGrpc();
@@ -10,8 +19,7 @@ builder.Services.AddScoped<ICatRepository, PostgresCatRepository>();
 
 // Register database context
 builder.Services.AddDbContext<CatCafeDbContext>(options =>
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("CatCafe")));
+    options.UseNpgsql(connectionString));
 
 var app = builder.Build();
 
