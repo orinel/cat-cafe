@@ -34,6 +34,9 @@ public class CatCafeDbContext : DbContext
 
             entity.Property(cat => cat.Status)
                 .HasColumnName("status");
+            
+            entity.Property(cat => cat.Activity)
+                .HasColumnName("activity");
 
             entity.Property(cat => cat.CreatedAt)
                 .HasColumnName("created_at")
@@ -47,7 +50,8 @@ public class CatCafeDbContext : DbContext
                 Name = "Барсик",
                 Age = 3,
                 Breed = Breed.DomesticCat,
-                Status = CatStatus.Available
+                Status = CatStatus.Available,
+                Activity = CatActivity.Eating,
             },
             new CatEntity
             {
@@ -55,7 +59,8 @@ public class CatCafeDbContext : DbContext
                 Name = "Мурзик",
                 Age = 5,
                 Breed = Breed.DomesticCat,
-                Status = CatStatus.Available
+                Status = CatStatus.Available,
+                Activity = CatActivity.Grooming,
             },
             new CatEntity
             {
@@ -63,7 +68,8 @@ public class CatCafeDbContext : DbContext
                 Name = "Васька",
                 Age = 2,
                 Breed = Breed.DomesticCat,
-                Status = CatStatus.Resting
+                Status = CatStatus.Booked,
+                Activity = CatActivity.Resting,
             }
         );
     }

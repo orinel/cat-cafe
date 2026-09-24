@@ -6,6 +6,7 @@ package cat;
 
 import "google/protobuf/timestamp.proto";
 import "common/pagination.proto";
+import "google/protobuf/empty.proto";
 
 
 service Cats {
@@ -13,23 +14,36 @@ service Cats {
   rpc ListCats (ListCatsRequest) returns (ListCatsResponse);
   // Get cat by id
   rpc GetCat (GetCatRequest) returns (GetCatResponse);
+  //Create new cat
+  rpc CreateCat (CreateCatRequest) returns (CreateCatResponse);
+  // Remove cat by id
+  rpc DeleteCat(DeleteCatRequest) returns (google.protobuf.Empty);
 }
 
 enum Breed {
-    DOMESTIC_CAT = 0;
-    MAINE_COON = 1;
-    RAGDOLL = 2;
-    SPHYNX = 3;
-    PERSIAN = 4;
-    BRITISH_SHORTHAIR = 5;
-    AMERICAN_SHORTHAIR = 6;
-    SIBERIAN = 7;
+  DOMESTIC_CAT = 0;
+  MAINE_COON = 1;
+  RAGDOLL = 2;
+  SPHYNX = 3;
+  PERSIAN = 4;
+  BRITISH_SHORTHAIR = 5;
+  AMERICAN_SHORTHAIR = 6;
+  SIBERIAN = 7;
 }
 
 enum CatStatus {
-    UNAVAILABLE = 0;
-    RESTING = 1;
-    AVAILABLE = 2;
+  UNAVAILABLE = 0;
+  BOOKED = 1;
+  AVAILABLE = 2;
+}
+
+enum CatActivity {  
+  IDLE = 0;
+  PLAYING = 1;
+  EATING = 2;
+  RESTING = 3;
+  GROOMING = 4;
+  VET_CARE = 5;
 }
 
 message  CatItem {
@@ -38,12 +52,14 @@ message  CatItem {
   int32 age = 3;
   Breed breed = 4;
   CatStatus status = 5;
-  google.protobuf.Timestamp created_at = 6;
+  CatActivity activity = 6;
+  google.protobuf.Timestamp created_at = 7;
 }
 
 message ListCatsRequest {
   common.pagination.PaginationRequest pagination = 1;
   optional CatStatus status = 2;
+  optional CatActivity activity = 3;
 }
 
 message ListCatsResponse {
@@ -57,4 +73,18 @@ message GetCatRequest {
 
 message GetCatResponse {
   CatItem cat = 1;
+}
+
+message CreateCatRequest{
+  string name = 1;
+  int32 age = 2;
+  Breed breed = 3;
+}
+
+message CreateCatResponse {
+  CatItem cat = 1;
+}
+
+message DeleteCatRequest{
+  int32 id = 1;
 }

@@ -7,5 +7,6 @@ public class CatEntity
     public int Age { get; set; }
     public Breed Breed { get; init; }
     public CatStatus Status { get; set; }
+    public CatActivity Activity { get; set; }
     public DateTimeOffset CreatedAt { get; init; }
 }
