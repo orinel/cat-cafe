@@ -56,4 +56,9 @@ public class InMemoryCatRepository : ICatRepository
     {
         return CatsList.Find(cat => cat.Id == id);
     }
+
+    public bool DeleteCat(int id)
+    {
+        return CatsList.RemoveAll(cat => cat.Id == id) > 0;
+    }
 }

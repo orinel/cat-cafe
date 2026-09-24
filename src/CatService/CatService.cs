@@ -4,6 +4,7 @@ using Grpc.Core;
 using Shared.Pagination;
 using Shared.Filtering;
 using System.Text.RegularExpressions;
+using Google.Protobuf.WellKnownTypes;
 
 namespace CatService;
 
@@ -109,5 +110,18 @@ public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
         } 
         response.Cat = cat;
         return Task.FromResult(response);
+    }
+
+    public override Task<Empty> DeleteCat(
+        DeleteCatRequest request,
+        ServerCallContext context)
+    {
+        var res = repository.DeleteCat(request.Id);
+        if (!res)
+        {
+            throw new RpcException(
+                new Status(StatusCode.NotFound, $"Cat id: {request.Id} not found"));
+        }
+        return Task.FromResult(new Empty());
     }
 }

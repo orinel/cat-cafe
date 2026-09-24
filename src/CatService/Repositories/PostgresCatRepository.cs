@@ -73,4 +73,15 @@ public class PostgresCatRepository : ICatRepository
             CreatedAt = Timestamp.FromDateTimeOffset(cat.CreatedAt)
         };
     }
+
+    public bool DeleteCat(int id)
+    {
+        var cat = context.Cats.Find(id);
+        if (cat == null)
+        {
+            return false;
+        }
+        context.Cats.Remove(cat);
+        return context.SaveChanges() > 0;
+    }
 }

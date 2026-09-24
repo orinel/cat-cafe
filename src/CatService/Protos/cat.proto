@@ -6,6 +6,7 @@ package cat;
 
 import "google/protobuf/timestamp.proto";
 import "common/pagination.proto";
+import "google/protobuf/empty.proto";
 
 
 service Cats {
@@ -15,6 +16,8 @@ service Cats {
   rpc GetCat (GetCatRequest) returns (GetCatResponse);
   //Create new cat
   rpc CreateCat (CreateCatRequest) returns (CreateCatResponse);
+  // Remove cat by id
+  rpc DeleteCat(DeleteCatRequest) returns (google.protobuf.Empty);
 }
 
 enum Breed {
@@ -80,4 +83,8 @@ message CreateCatRequest{
 
 message CreateCatResponse {
   CatItem cat = 1;
+}
+
+message DeleteCatRequest{
+  int32 id = 1;
 }
