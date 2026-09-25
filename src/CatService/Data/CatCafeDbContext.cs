@@ -1,5 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using CatService.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CatService.Data;
 

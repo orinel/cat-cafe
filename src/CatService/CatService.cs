@@ -1,11 +1,11 @@
-﻿using Grpc.Core;
-using Shared.Pagination;
-using Shared.Filtering;
-using Google.Protobuf.WellKnownTypes;
-
-using CatCafe.Contracts.Pagination;
+﻿using CatCafe.Contracts.Pagination;
 using CatService.Repositories;
 using CatService.Validators;
+using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
+using Shared.Pagination;
+using Shared.Filtering;
+
 
 namespace CatService;
 

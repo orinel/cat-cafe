@@ -1,9 +1,8 @@
 using CatService.Data.Entities;
+using CatService.Data;
+using Google.Protobuf.WellKnownTypes;
 
 namespace CatService.Repositories;
-
-using Data;
-using Google.Protobuf.WellKnownTypes;
 
 public class PostgresCatRepository : ICatRepository
 {
