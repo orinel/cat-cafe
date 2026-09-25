@@ -1,9 +1,8 @@
 using CatService.Data.Entities;
+using CatService.Data;
+using Google.Protobuf.WellKnownTypes;
 
 namespace CatService.Repositories;
-
-using Data;
-using Google.Protobuf.WellKnownTypes;
 
 public class PostgresCatRepository : ICatRepository
 {
@@ -12,6 +11,19 @@ public class PostgresCatRepository : ICatRepository
     public PostgresCatRepository(CatCafeDbContext context)
     {
         this.context = context;
+    }
+
+    private static CatItem MapToCatItem(CatEntity cat)
+    {
+        return new CatItem{
+            Id = cat.Id,
+            Name = cat.Name,
+            Age = cat.Age,
+            Breed = cat.Breed,
+            Status = cat.Status,
+            Activity = cat.Activity,
+            CreatedAt = Timestamp.FromDateTimeOffset(cat.CreatedAt)
+        };
     }
 
     public CatItem CreateCat(string name, int age, Breed breed)
@@ -23,55 +35,23 @@ public class PostgresCatRepository : ICatRepository
             Breed = breed,
             Status = CatStatus.Available,
             Activity = CatActivity.Idle,
-            
         };
         context.Cats.Add(cat);
         context.SaveChanges();
-        return new CatItem
-        {
-            Id = cat.Id,
-            Name = cat.Name,
-            Age = cat.Age,
-            Breed = cat.Breed,
-            Status = cat.Status,
-            Activity = cat.Activity,
-            CreatedAt = Timestamp.FromDateTimeOffset(cat.CreatedAt)
-        };
+        return MapToCatItem(cat);
     }
 
     public List<CatItem> GetAllCats()
     {
         var cats = context.Cats.ToList();
         return cats
-            .Select(cat => new CatItem
-            {
-                Id = cat.Id,
-                Name = cat.Name,
-                Age = cat.Age,
-                Breed = cat.Breed,
-                Status = cat.Status,
-                Activity =  cat.Activity,
-                CreatedAt = Timestamp.FromDateTimeOffset(cat.CreatedAt)
-            }).ToList();
+            .Select(MapToCatItem).ToList();
     }
 
     public CatItem? GetCatById(int id)
     {
         var cat = context.Cats.Find(id);
-        if (cat == null)
-        {
-            return null;
-        }
-        return new CatItem
-        {
-            Id = cat.Id,
-            Name = cat.Name,
-            Age = cat.Age,
-            Breed = cat.Breed,
-            Status = cat.Status,
-            Activity =  cat.Activity,
-            CreatedAt = Timestamp.FromDateTimeOffset(cat.CreatedAt)
-        };
+        return cat == null ? null : MapToCatItem(cat);
     }
 
     public bool DeleteCat(int id)

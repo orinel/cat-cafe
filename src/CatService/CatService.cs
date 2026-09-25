@@ -1,10 +1,11 @@
 ﻿using CatCafe.Contracts.Pagination;
 using CatService.Repositories;
+using CatService.Validators;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Shared.Pagination;
 using Shared.Filtering;
-using System.Text.RegularExpressions;
-using Google.Protobuf.WellKnownTypes;
+
 
 namespace CatService;
 
@@ -16,31 +17,7 @@ public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
         ServerCallContext context)
 
     {
-        var response = new CreateCatResponse();
-        
-        if (string.IsNullOrWhiteSpace(request.Name))
-        {
-            throw new RpcException(
-                new Status(StatusCode.InvalidArgument, "Name is required."));
-        }
-        
-        if (request.Name.Length > 100)
-        {
-            throw new RpcException(
-                new Status(StatusCode.InvalidArgument, "Name must be no more than 100 characters."));
-        }
-        
-        if (!Regex.IsMatch(request.Name, @"^[A-Za-zА-Яа-яЁё]+$"))
-        {
-            throw new RpcException(
-                new Status(StatusCode.InvalidArgument, "Name must contain only Latin or Cyrillic letters."));
-        }
-        
-        if (request.Age < 1 || request.Age > 20)
-        {
-            throw new RpcException(
-                new Status(StatusCode.InvalidArgument, "Age must be between 1 and 20."));
-        }
+        CreateCatValidator.Validate(request);
         
         if (repository.GetAllCats()
             .Any(cat => string.Equals(
@@ -56,15 +33,17 @@ public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
 
         var cat = repository.CreateCat(request.Name, request.Age, request.Breed);
 
-        response.Cat = cat;
-        return Task.FromResult(response);
+        return Task.FromResult(new CreateCatResponse
+        {
+            Cat = cat 
+        });
     }
     
     public override Task<ListCatsResponse> ListCats(
         ListCatsRequest request,
         ServerCallContext context)
     {
-        var reply = new ListCatsResponse();
+        var response = new ListCatsResponse();
 
         var cats = repository.GetAllCats();
 
@@ -83,7 +62,7 @@ public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
             request.Pagination.Page,
             request.Pagination.PageSize);
         
-        reply.Cats.AddRange(pageCats.Items);
+        response.Cats.AddRange(pageCats.Items);
         
         var pagination = new PaginationResponse
         {
@@ -93,8 +72,8 @@ public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
             TotalPages = pageCats.TotalPages,
         };
         
-        reply.Pagination = pagination;
-        return Task.FromResult(reply);
+        response.Pagination = pagination;
+        return Task.FromResult(response);
     }
 
     public override Task<GetCatResponse> GetCat(
