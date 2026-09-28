@@ -57,6 +57,10 @@ public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
             cats = Filtering.Filter(cats, cat => cat.Activity == request.Activity);
         }
         
+        cats = cats
+            .OrderBy(cat => cat.Id)
+            .ToList();
+        
         var pageCats = Paginator.Paginate(
             cats,
             request.Pagination.Page,
