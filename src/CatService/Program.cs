@@ -6,12 +6,17 @@ DotNetEnv.Env.TraversePath().Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString =
-    $"Host=localhost;" +
-    $"Port=5432;" +
-    $"Database={Environment.GetEnvironmentVariable("CAT_SERVICE_DB_NAME")};" +
-    $"Username={Environment.GetEnvironmentVariable("CAT_SERVICE_DB_USER")};" +
-    $"Password={Environment.GetEnvironmentVariable("CAT_SERVICE_DB_PASSWORD")}";
+var connectionString = builder.Configuration.GetConnectionString("CatCafe");
+
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    connectionString =
+        $"Host=localhost;" +
+        $"Port=5432;" +
+        $"Database={Environment.GetEnvironmentVariable("CAT_SERVICE_DB_NAME")};" +
+        $"Username={Environment.GetEnvironmentVariable("CAT_SERVICE_DB_USER")};" +
+        $"Password={Environment.GetEnvironmentVariable("CAT_SERVICE_DB_PASSWORD")}";
+}
 
 // Register application services
 builder.Services.AddGrpc();
