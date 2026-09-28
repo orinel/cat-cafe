@@ -31,7 +31,7 @@ public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
                     $"Cat with name '{request.Name}' already exists."));
         }
 
-        var cat = repository.CreateCat(request.Name, request.Age, request.Breed);
+        var cat = repository.CreateCat(request.Name, request.Age, request.Gender, request.Breed);
 
         return Task.FromResult(new CreateCatResponse
         {

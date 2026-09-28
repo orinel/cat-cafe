@@ -46,14 +46,20 @@ enum CatActivity {
   VET_CARE = 5;
 }
 
+enum Gender {
+  MALE = 0;
+  FEMALE = 1;
+}
+
 message  CatItem {
   int32 id = 1;
   string name = 2;
   int32 age = 3;
-  Breed breed = 4;
-  CatStatus status = 5;
-  CatActivity activity = 6;
-  google.protobuf.Timestamp created_at = 7;
+  Gender gender = 4;
+  Breed breed = 5;
+  CatStatus status = 6;
+  CatActivity activity = 7;
+  google.protobuf.Timestamp created_at = 8;
 }
 
 message ListCatsRequest {
@@ -78,7 +84,8 @@ message GetCatResponse {
 message CreateCatRequest{
   string name = 1;
   int32 age = 2;
-  Breed breed = 3;
+  optional Gender gender = 3;
+  Breed breed = 4;
 }
 
 message CreateCatResponse {

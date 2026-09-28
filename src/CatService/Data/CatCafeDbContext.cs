@@ -28,6 +28,9 @@ public class CatCafeDbContext : DbContext
 
             entity.Property(cat => cat.Age)
                 .HasColumnName("age");
+            
+            entity.Property(cat => cat.Gender)
+                .HasColumnName("gender");
 
             entity.Property(cat => cat.Breed)
                 .HasColumnName("breed");
@@ -49,6 +52,7 @@ public class CatCafeDbContext : DbContext
                 Id = 1,
                 Name = "Барсик",
                 Age = 3,
+                Gender = Gender.Male,
                 Breed = Breed.DomesticCat,
                 Status = CatStatus.Available,
                 Activity = CatActivity.Eating,
@@ -56,8 +60,9 @@ public class CatCafeDbContext : DbContext
             new CatEntity
             {
                 Id = 2,
-                Name = "Мурзик",
+                Name = "Мурка",
                 Age = 5,
+                Gender = Gender.Female,
                 Breed = Breed.DomesticCat,
                 Status = CatStatus.Available,
                 Activity = CatActivity.Grooming,
@@ -67,6 +72,7 @@ public class CatCafeDbContext : DbContext
                 Id = 3,
                 Name = "Васька",
                 Age = 2,
+                Gender = Gender.Male,
                 Breed = Breed.DomesticCat,
                 Status = CatStatus.Booked,
                 Activity = CatActivity.Resting,

@@ -19,6 +19,7 @@ public class PostgresCatRepository : ICatRepository
             Id = cat.Id,
             Name = cat.Name,
             Age = cat.Age,
+            Gender = cat.Gender,
             Breed = cat.Breed,
             Status = cat.Status,
             Activity = cat.Activity,
@@ -26,12 +27,13 @@ public class PostgresCatRepository : ICatRepository
         };
     }
 
-    public CatItem CreateCat(string name, int age, Breed breed)
+    public CatItem CreateCat(string name, int age, Gender gender, Breed breed)
     {
         var cat = new CatEntity
         {
             Name = name,
             Age = age,
+            Gender = gender,
             Breed = breed,
             Status = CatStatus.Available,
             Activity = CatActivity.Idle,

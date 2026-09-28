@@ -6,18 +6,19 @@ public class InMemoryCatRepository : ICatRepository
 {
     private List<CatItem> CatsList { get; }  = 
     [
-        CreateSeedCat(1, "Барсик", 3, Breed.DomesticCat, CatStatus.Available, CatActivity.Eating),
-        CreateSeedCat(2, "Мурзик", 5, Breed.DomesticCat, CatStatus.Available, CatActivity.Grooming),
-        CreateSeedCat(3, "Васька", 2, Breed.DomesticCat, CatStatus.Booked, CatActivity.Resting),
+        CreateSeedCat(1, "Барсик", 3, Gender.Male, Breed.DomesticCat, CatStatus.Available, CatActivity.Eating),
+        CreateSeedCat(2, "Мурка", 5, Gender.Female, Breed.DomesticCat, CatStatus.Available, CatActivity.Grooming),
+        CreateSeedCat(3, "Васька", 2, Gender.Male, Breed.DomesticCat, CatStatus.Booked, CatActivity.Resting),
     ];
 
-    private static CatItem CreateSeedCat(int id, string name, int age, Breed breed, CatStatus status, CatActivity activity)
+    private static CatItem CreateSeedCat(int id, string name, int age, Gender gender, Breed breed, CatStatus status, CatActivity activity)
     {
         return new CatItem
         {
             Id = id,
             Name = name,
             Age = age,
+            Gender = gender,
             Breed = breed,
             Status = status,
             Activity = activity,
@@ -25,7 +26,7 @@ public class InMemoryCatRepository : ICatRepository
         };
     }
 
-    public CatItem CreateCat(string name, int age, Breed breed)
+    public CatItem CreateCat(string name, int age, Gender gender, Breed breed)
     {
         var id = CatsList.Count == 0
             ? 1
@@ -36,6 +37,7 @@ public class InMemoryCatRepository : ICatRepository
             Id = id,
             Name = name,
             Age = age,
+            Gender = gender,
             Breed = breed,
             Status = CatStatus.Available,
             Activity = CatActivity.Idle,

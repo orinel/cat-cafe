@@ -13,6 +13,12 @@ public static class CreateCatValidator
                 new Status(StatusCode.InvalidArgument, "Name is required."));
         }
         
+        if (!request.HasGender)
+        {
+            throw new RpcException(
+                new Status(StatusCode.InvalidArgument, "Gender is required."));
+        }
+        
         if (request.Name.Length > 100)
         {
             throw new RpcException(
