@@ -31,12 +31,6 @@ enum Breed {
   SIBERIAN = 7;
 }
 
-enum CatStatus {
-  UNAVAILABLE = 0;
-  BOOKED = 1;
-  AVAILABLE = 2;
-}
-
 enum CatActivity {  
   IDLE = 0;
   PLAYING = 1;
@@ -44,6 +38,7 @@ enum CatActivity {
   RESTING = 3;
   GROOMING = 4;
   VET_CARE = 5;
+  WITH_VISITOR = 6;
 }
 
 enum Gender {
@@ -57,14 +52,12 @@ message  CatItem {
   int32 age = 3;
   Gender gender = 4;
   Breed breed = 5;
-  CatStatus status = 6;
-  CatActivity activity = 7;
-  google.protobuf.Timestamp created_at = 8;
+  CatActivity activity = 6;
+  google.protobuf.Timestamp created_at = 7;
 }
 
 message ListCatsRequest {
   common.pagination.PaginationRequest pagination = 1;
-  optional CatStatus status = 2;
   optional CatActivity activity = 3;
 }
 

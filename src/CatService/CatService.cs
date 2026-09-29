@@ -46,11 +46,6 @@ public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
         var response = new ListCatsResponse();
 
         var cats = repository.GetAllCats();
-
-        if (request.HasStatus)
-        {
-            cats = Filtering.Filter(cats, cat => cat.Status == request.Status);
-        }
         
         if (request.HasActivity)
         {

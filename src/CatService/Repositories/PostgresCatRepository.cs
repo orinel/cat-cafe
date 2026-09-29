@@ -21,7 +21,6 @@ public class PostgresCatRepository : ICatRepository
             Age = cat.Age,
             Gender = cat.Gender,
             Breed = cat.Breed,
-            Status = cat.Status,
             Activity = cat.Activity,
             CreatedAt = Timestamp.FromDateTimeOffset(cat.CreatedAt)
         };
@@ -35,7 +34,6 @@ public class PostgresCatRepository : ICatRepository
             Age = age,
             Gender = gender,
             Breed = breed,
-            Status = CatStatus.Available,
             Activity = CatActivity.Idle,
         };
         context.Cats.Add(cat);

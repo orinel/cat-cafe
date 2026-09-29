@@ -6,12 +6,12 @@ public class InMemoryCatRepository : ICatRepository
 {
     private List<CatItem> CatsList { get; }  = 
     [
-        CreateSeedCat(1, "Барсик", 3, Gender.Male, Breed.DomesticCat, CatStatus.Available, CatActivity.Eating),
-        CreateSeedCat(2, "Мурка", 5, Gender.Female, Breed.DomesticCat, CatStatus.Available, CatActivity.Grooming),
-        CreateSeedCat(3, "Васька", 2, Gender.Male, Breed.DomesticCat, CatStatus.Booked, CatActivity.Resting),
+        CreateSeedCat(1, "Барсик", 3, Gender.Male, Breed.DomesticCat, CatActivity.Eating),
+        CreateSeedCat(2, "Мурка", 5, Gender.Female, Breed.DomesticCat, CatActivity.Grooming),
+        CreateSeedCat(3, "Васька", 2, Gender.Male, Breed.DomesticCat, CatActivity.Resting),
     ];
 
-    private static CatItem CreateSeedCat(int id, string name, int age, Gender gender, Breed breed, CatStatus status, CatActivity activity)
+    private static CatItem CreateSeedCat(int id, string name, int age, Gender gender, Breed breed, CatActivity activity)
     {
         return new CatItem
         {
@@ -20,7 +20,6 @@ public class InMemoryCatRepository : ICatRepository
             Age = age,
             Gender = gender,
             Breed = breed,
-            Status = status,
             Activity = activity,
             CreatedAt = Timestamp.FromDateTimeOffset(DateTimeOffset.UtcNow)
         };
@@ -39,7 +38,6 @@ public class InMemoryCatRepository : ICatRepository
             Age = age,
             Gender = gender,
             Breed = breed,
-            Status = CatStatus.Available,
             Activity = CatActivity.Idle,
             CreatedAt = Timestamp.FromDateTimeOffset(DateTimeOffset.UtcNow)
         };
