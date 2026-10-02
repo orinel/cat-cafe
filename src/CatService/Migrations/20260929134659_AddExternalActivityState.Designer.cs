@@ -3,6 +3,7 @@ using System;
 using CatService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CatService.Migrations
 {
     [DbContext(typeof(CatCafeDbContext))]
-    partial class CatCafeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260929134659_AddExternalActivityState")]
+    partial class AddExternalActivityState
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,17 +34,13 @@ namespace CatService.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Activity")
-                        .HasColumnType("integer")
-                        .HasColumnName("activity");
-
                     b.Property<DateTimeOffset?>("ActivityEndsAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("activity_ends_at");
 
-                    b.Property<DateTimeOffset?>("ActivityStartsAt")
+                    b.Property<DateTimeOffset?>("ActivityStartedAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("activity_starts_at");
+                        .HasColumnName("activity_started_at");
 
                     b.Property<int>("Age")
                         .HasColumnType("integer")
@@ -50,6 +49,10 @@ namespace CatService.Migrations
                     b.Property<int>("Breed")
                         .HasColumnType("integer")
                         .HasColumnName("breed");
+
+                    b.Property<int>("CatActivity")
+                        .HasColumnType("integer")
+                        .HasColumnName("activity");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -79,9 +82,9 @@ namespace CatService.Migrations
                         new
                         {
                             Id = 1,
-                            Activity = 2,
                             Age = 3,
                             Breed = 0,
+                            CatActivity = 2,
                             CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Gender = 0,
                             Name = "Барсик"
@@ -89,22 +92,19 @@ namespace CatService.Migrations
                         new
                         {
                             Id = 2,
-                            Activity = 4,
-                            ActivityEndsAt = new DateTimeOffset(new DateTime(2026, 10, 2, 13, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ActivityStartsAt = new DateTimeOffset(new DateTime(2026, 10, 2, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Age = 5,
                             Breed = 0,
+                            CatActivity = 4,
                             CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExternalActivityId = 123123,
                             Gender = 1,
                             Name = "Мурка"
                         },
                         new
                         {
                             Id = 3,
-                            Activity = 3,
                             Age = 2,
                             Breed = 0,
+                            CatActivity = 3,
                             CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Gender = 0,
                             Name = "Васька"

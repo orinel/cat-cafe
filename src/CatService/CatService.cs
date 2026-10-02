@@ -49,7 +49,8 @@ public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
         
         if (request.HasActivity)
         {
-            cats = Filtering.Filter(cats, cat => cat.Activity == request.Activity);
+            cats = Filtering.Filter(
+                cats, cat => cat.CatActivityState.Activity == request.Activity);
         }
         
         cats = cats
@@ -88,6 +89,27 @@ public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
         } 
         response.Cat = cat;
         return Task.FromResult(response);
+    }
+
+    public override Task<Empty> StartExternalActivity(
+        StartExternalActivityRequest request, 
+        ServerCallContext context)
+    {
+        var res = repository.SetCatActivity(
+            request.CatId,
+            request.Activity,
+            request.ExternalActivityId,
+            request.StartTime.ToDateTimeOffset(),
+            request.EndTime.ToDateTimeOffset()
+            );
+        
+        if (res == false)
+        {
+            throw new RpcException(
+                new Status(StatusCode.NotFound, $"Cat id: {request.CatId} not found"));
+        }
+        
+        return Task.FromResult(new Empty());
     }
 
     public override Task<Empty> DeleteCat(
