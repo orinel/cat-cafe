@@ -7,7 +7,9 @@ public class CatEntity
     public int Age { get; set; }
     public Gender Gender { get; init; }
     public Breed Breed { get; init; }
-    public CatStatus Status { get; set; }
-    public CatActivity Activity { get; set; }
+    public Activity Activity { get; set; }
+    public int? ExternalActivityId { get; set; }
+    public DateTimeOffset? ActivityStartsAt { get; set; }
+    public DateTimeOffset? ActivityEndsAt   { get; set; }
     public DateTimeOffset CreatedAt { get; init; }
 }
