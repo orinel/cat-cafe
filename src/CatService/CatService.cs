@@ -1,6 +1,7 @@
 ﻿using CatCafe.Contracts.Pagination;
 using CatService.Repositories;
 using CatService.Validators;
+using CatService.Services;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Shared.Pagination;
@@ -31,7 +32,8 @@ public class CatGrpcService(ICatRepository repository) : Cats.CatsBase
                     $"Cat with name '{request.Name}' already exists."));
         }
 
-        var cat = repository.CreateCat(request.Name, request.Age, request.Gender, request.Breed);
+        var activityState = CatActivityService.GetRandomInternalActivity();
+        var cat = repository.CreateCat(request.Name, request.Age, request.Gender, request.Breed, activityState);
 
         return Task.FromResult(new CreateCatResponse
         {

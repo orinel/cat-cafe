@@ -1,12 +1,11 @@
 using CatService.Repositories;
+
 using Shared.Filtering;
 
 namespace  CatService.Services;
 
 public class CatActivityBackgroundService(IServiceScopeFactory serviceScopeFactory) : BackgroundService
 {
-    private readonly Activity[] _internalActivities = [Activity.Idle, Activity.Playing, Activity.Eating, Activity.Resting];
-
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
@@ -18,14 +17,13 @@ public class CatActivityBackgroundService(IServiceScopeFactory serviceScopeFacto
 
             foreach (var cat in cats)
             {
-                cat.CatActivityState.Activity = _internalActivities[Random.Shared.Next(_internalActivities.Length)];
-                var now = DateTimeOffset.UtcNow;
+                var activity = CatActivityService.GetRandomInternalActivity();
                 repository.SetCatActivity(
                     cat.Id,
-                    cat.CatActivityState.Activity,
+                    activity.Activity,
                     null,
-                    now,
-                    now.AddMinutes(1));
+                    activity.StartTime.ToDateTimeOffset(),
+                    activity.EndTime.ToDateTimeOffset());
             }
             
             await Task.Delay(5000, stoppingToken);

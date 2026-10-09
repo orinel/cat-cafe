@@ -2,7 +2,7 @@ namespace CatService.Repositories;
 
 public interface ICatRepository
 {
-    CatItem CreateCat(string name, int age, Gender gender, Breed breed);
+    CatItem CreateCat(string name, int age, Gender gender, Breed breed, CatActivityState activityState);
     List<CatItem> GetAllCats();
     CatItem? GetCatById(int id);
     bool SetCatActivity(

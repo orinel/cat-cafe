@@ -23,6 +23,7 @@ if (string.IsNullOrWhiteSpace(connectionString))
 builder.Services.AddGrpc();
 builder.Services.AddScoped<ICatRepository, PostgresCatRepository>();
 builder.Services.AddHostedService<CatActivityBackgroundService>();
+builder.Services.AddSingleton<CatActivityService>();
 
 // Register database context
 builder.Services.AddDbContext<CatCafeDbContext>(options =>
