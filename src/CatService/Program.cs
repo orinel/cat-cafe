@@ -1,5 +1,6 @@
 using CatService.Repositories;
 using CatService.Data;
+using CatService.Services;
 using Microsoft.EntityFrameworkCore;
 
 DotNetEnv.Env.TraversePath().Load();
@@ -21,6 +22,7 @@ if (string.IsNullOrWhiteSpace(connectionString))
 // Register application services
 builder.Services.AddGrpc();
 builder.Services.AddScoped<ICatRepository, PostgresCatRepository>();
+builder.Services.AddHostedService<CatActivityBackgroundService>();
 
 // Register database context
 builder.Services.AddDbContext<CatCafeDbContext>(options =>
