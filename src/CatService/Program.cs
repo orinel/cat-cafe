@@ -1,6 +1,7 @@
 using CatService.Repositories;
 using CatService.Data;
 using CatService.Services;
+using CatService;
 using Microsoft.EntityFrameworkCore;
 
 DotNetEnv.Env.TraversePath().Load();
@@ -31,11 +32,25 @@ builder.Services.AddDbContext<CatCafeDbContext>(options =>
 
 var app = builder.Build();
 
-// Apply pending database migrations
+// Apply pending database migrations and seed initial cats if the database is empty
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<CatCafeDbContext>();
     db.Database.Migrate();
+
+    var repository = scope.ServiceProvider.GetRequiredService<ICatRepository>();
+
+    if (repository.GetAllCats().Count == 0)
+    {
+        repository.CreateCat("Барсик", 3, Gender.Male, Breed.DomesticCat,
+            CatActivityService.GetRandomInternalActivity());
+
+        repository.CreateCat("Мурка", 5, Gender.Female, Breed.DomesticCat,
+            CatActivityService.GetRandomInternalActivity());
+
+        repository.CreateCat("Васька", 2, Gender.Male, Breed.DomesticCat,
+            CatActivityService.GetRandomInternalActivity());
+    }
 }
 
 // Configure the HTTP request pipeline.

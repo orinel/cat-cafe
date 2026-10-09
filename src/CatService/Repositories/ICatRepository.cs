@@ -9,7 +9,7 @@ public interface ICatRepository
         int catId,
         Activity activity,
         int? externalActivityId,
-        DateTimeOffset? activityStartsAt,
-        DateTimeOffset? activityEndsAt);
+        DateTimeOffset activityStartsAt,
+        DateTimeOffset activityEndsAt);
     bool DeleteCat(int id);
 }

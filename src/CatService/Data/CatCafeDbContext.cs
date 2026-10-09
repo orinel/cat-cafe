@@ -51,38 +51,5 @@ public class CatCafeDbContext : DbContext
                 .HasColumnName("created_at")
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
         });
-        
-        modelBuilder.Entity<CatEntity>().HasData(
-            new CatEntity
-            {
-                Id = 1,
-                Name = "Барсик",
-                Age = 3,
-                Gender = Gender.Male,
-                Breed = Breed.DomesticCat,
-                Activity = Activity.Eating,
-            },
-            new CatEntity
-            {
-                Id = 2,
-                Name = "Мурка",
-                Age = 5,
-                Gender = Gender.Female,
-                Breed = Breed.DomesticCat,
-                Activity = Activity.Grooming,
-                ExternalActivityId = 123123,
-                ActivityStartsAt =  new DateTimeOffset(2026, 10, 2, 12, 0, 0, TimeSpan.Zero),
-                ActivityEndsAt = new DateTimeOffset(2026, 10, 2, 13, 0, 0, TimeSpan.Zero),
-            },
-            new CatEntity
-            {
-                Id = 3,
-                Name = "Васька",
-                Age = 2,
-                Gender = Gender.Male,
-                Breed = Breed.DomesticCat,
-                Activity = Activity.Resting,
-            }
-        );
     }
 }

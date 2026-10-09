@@ -24,11 +24,8 @@ public class PostgresCatRepository : ICatRepository
         if (cat.ExternalActivityId.HasValue)
             state.ExternalActivityId = cat.ExternalActivityId.Value;
         
-        if (cat.ActivityStartsAt.HasValue)
-            state.StartTime = Timestamp.FromDateTimeOffset(cat.ActivityStartsAt.Value);
-        
-        if (cat.ActivityEndsAt.HasValue)
-            state.EndTime =  Timestamp.FromDateTimeOffset(cat.ActivityEndsAt.Value);
+        state.StartTime = Timestamp.FromDateTimeOffset(cat.ActivityStartsAt);
+        state.EndTime =  Timestamp.FromDateTimeOffset(cat.ActivityEndsAt);
         
         return state;
     }
@@ -83,8 +80,8 @@ public class PostgresCatRepository : ICatRepository
         int id,
         Activity activity,
         int? externalActivityId,
-        DateTimeOffset? activityStartsAt,
-        DateTimeOffset? activityEndsAt)
+        DateTimeOffset activityStartsAt,
+        DateTimeOffset activityEndsAt)
     {
         var cat = context.Cats.Find(id);
         if (cat == null) return false;

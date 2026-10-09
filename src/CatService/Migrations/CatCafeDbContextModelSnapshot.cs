@@ -35,11 +35,11 @@ namespace CatService.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("activity");
 
-                    b.Property<DateTimeOffset?>("ActivityEndsAt")
+                    b.Property<DateTimeOffset>("ActivityEndsAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("activity_ends_at");
 
-                    b.Property<DateTimeOffset?>("ActivityStartsAt")
+                    b.Property<DateTimeOffset>("ActivityStartsAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("activity_starts_at");
 
@@ -74,41 +74,6 @@ namespace CatService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("cats", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Activity = 2,
-                            Age = 3,
-                            Breed = 0,
-                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Gender = 0,
-                            Name = "Барсик"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Activity = 4,
-                            ActivityEndsAt = new DateTimeOffset(new DateTime(2026, 10, 2, 13, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ActivityStartsAt = new DateTimeOffset(new DateTime(2026, 10, 2, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Age = 5,
-                            Breed = 0,
-                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ExternalActivityId = 123123,
-                            Gender = 1,
-                            Name = "Мурка"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Activity = 3,
-                            Age = 2,
-                            Breed = 0,
-                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Gender = 0,
-                            Name = "Васька"
-                        });
                 });
 #pragma warning restore 612, 618
         }

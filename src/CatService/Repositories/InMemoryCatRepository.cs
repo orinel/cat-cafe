@@ -68,8 +68,8 @@ public class InMemoryCatRepository : ICatRepository
         int catId,
         Activity activity,
         int? externalActivityId,
-        DateTimeOffset? activityStartsAt,
-        DateTimeOffset? activityEndsAt)
+        DateTimeOffset activityStartsAt,
+        DateTimeOffset activityEndsAt)
     {
         var cat = CatsList.Find(cat => cat.Id == catId);
         if (cat == null) return false;
@@ -86,15 +86,8 @@ public class InMemoryCatRepository : ICatRepository
             state.ClearExternalActivityId();
         }
         
-        if (activityStartsAt.HasValue)
-        {
-            state.StartTime = Timestamp.FromDateTimeOffset(activityStartsAt.Value);
-        }
-
-        if (activityEndsAt.HasValue)
-        {
-            state.EndTime = Timestamp.FromDateTimeOffset(activityEndsAt.Value);
-        }
+        state.StartTime = Timestamp.FromDateTimeOffset(activityStartsAt);
+        state.EndTime = Timestamp.FromDateTimeOffset(activityEndsAt);
         
         return true;
     }
