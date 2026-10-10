@@ -1,3 +1,4 @@
+using CatService.Services;
 using Google.Protobuf.WellKnownTypes;
 
 namespace CatService.Repositories;
@@ -6,9 +7,9 @@ public class InMemoryCatRepository : ICatRepository
 {
     private List<CatItem> CatsList { get; }  = 
     [
-        CreateSeedCat(1, "Барсик", 3, Gender.Male, Breed.DomesticCat, Activity.Eating),
-        CreateSeedCat(2, "Мурка", 5, Gender.Female, Breed.DomesticCat, Activity.Grooming),
-        CreateSeedCat(3, "Васька", 2, Gender.Male, Breed.DomesticCat, Activity.Resting),
+        CreateSeedCat(1, "Барсик", 3, Gender.Male, Breed.DomesticCat, CatActivityService.GetRandomInternalActivity()),
+        CreateSeedCat(2, "Мурка", 5, Gender.Female, Breed.DomesticCat, CatActivityService.GetRandomInternalActivity()),
+        CreateSeedCat(3, "Васька", 2, Gender.Male, Breed.DomesticCat, CatActivityService.GetRandomInternalActivity()),
     ];
     
     private static CatItem CreateSeedCat(
@@ -17,7 +18,7 @@ public class InMemoryCatRepository : ICatRepository
         int age,
         Gender gender,
         Breed breed,
-        Activity activity)
+        CatActivityState activityState)
     {
         return new CatItem
         {
@@ -26,15 +27,12 @@ public class InMemoryCatRepository : ICatRepository
             Age = age,
             Gender = gender,
             Breed = breed,
-            CatActivityState = new CatActivityState
-            {
-                Activity = activity,
-            },
+            CatActivityState = activityState,
             CreatedAt = Timestamp.FromDateTimeOffset(DateTimeOffset.UtcNow)
         };
     }
     
-    public CatItem CreateCat(string name, int age, Gender gender, Breed breed)
+    public CatItem CreateCat(string name, int age, Gender gender, Breed breed, CatActivityState activityState)
     {
         var id = CatsList.Count == 0
             ? 1
@@ -47,10 +45,7 @@ public class InMemoryCatRepository : ICatRepository
             Age = age,
             Gender = gender,
             Breed = breed,
-            CatActivityState = new CatActivityState
-            {
-                Activity = Activity.Idle,
-            },
+            CatActivityState = activityState,
             CreatedAt = Timestamp.FromDateTimeOffset(DateTimeOffset.UtcNow)
         };
         
@@ -73,8 +68,8 @@ public class InMemoryCatRepository : ICatRepository
         int catId,
         Activity activity,
         int? externalActivityId,
-        DateTimeOffset? activityStartsAt,
-        DateTimeOffset? activityEndsAt)
+        DateTimeOffset activityStartsAt,
+        DateTimeOffset activityEndsAt)
     {
         var cat = CatsList.Find(cat => cat.Id == catId);
         if (cat == null) return false;
@@ -91,15 +86,8 @@ public class InMemoryCatRepository : ICatRepository
             state.ClearExternalActivityId();
         }
         
-        if (activityStartsAt.HasValue)
-        {
-            state.StartTime = Timestamp.FromDateTimeOffset(activityStartsAt.Value);
-        }
-
-        if (activityEndsAt.HasValue)
-        {
-            state.EndTime = Timestamp.FromDateTimeOffset(activityEndsAt.Value);
-        }
+        state.StartTime = Timestamp.FromDateTimeOffset(activityStartsAt);
+        state.EndTime = Timestamp.FromDateTimeOffset(activityEndsAt);
         
         return true;
     }

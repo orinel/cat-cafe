@@ -1,5 +1,6 @@
 using CatService.Data.Entities;
 using CatService.Data;
+using CatService.Services;
 using Google.Protobuf.WellKnownTypes;
 
 namespace CatService.Repositories;
@@ -23,11 +24,8 @@ public class PostgresCatRepository : ICatRepository
         if (cat.ExternalActivityId.HasValue)
             state.ExternalActivityId = cat.ExternalActivityId.Value;
         
-        if (cat.ActivityStartsAt.HasValue)
-            state.StartTime = Timestamp.FromDateTimeOffset(cat.ActivityStartsAt.Value);
-        
-        if (cat.ActivityEndsAt.HasValue)
-            state.EndTime =  Timestamp.FromDateTimeOffset(cat.ActivityEndsAt.Value);
+        state.StartTime = Timestamp.FromDateTimeOffset(cat.ActivityStartsAt);
+        state.EndTime =  Timestamp.FromDateTimeOffset(cat.ActivityEndsAt);
         
         return state;
     }
@@ -45,7 +43,7 @@ public class PostgresCatRepository : ICatRepository
         };
     }
     
-    public CatItem CreateCat(string name, int age, Gender gender, Breed breed)
+    public CatItem CreateCat(string name, int age, Gender gender, Breed breed, CatActivityState activityState)
     {
         var cat = new CatEntity
         {
@@ -53,7 +51,12 @@ public class PostgresCatRepository : ICatRepository
             Age = age,
             Gender = gender,
             Breed = breed,
-            Activity = Activity.Idle,
+            Activity = activityState.Activity,
+            ExternalActivityId = activityState.HasExternalActivityId
+                ? activityState.ExternalActivityId
+                : null,
+            ActivityStartsAt = activityState.StartTime.ToDateTimeOffset(),
+            ActivityEndsAt = activityState.EndTime.ToDateTimeOffset()
         };
         context.Cats.Add(cat);
         context.SaveChanges();
@@ -77,8 +80,8 @@ public class PostgresCatRepository : ICatRepository
         int id,
         Activity activity,
         int? externalActivityId,
-        DateTimeOffset? activityStartsAt,
-        DateTimeOffset? activityEndsAt)
+        DateTimeOffset activityStartsAt,
+        DateTimeOffset activityEndsAt)
     {
         var cat = context.Cats.Find(id);
         if (cat == null) return false;
