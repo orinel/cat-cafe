@@ -7,6 +7,13 @@ using Microsoft.EntityFrameworkCore;
 DotNetEnv.Env.TraversePath().Load();
 
 var builder = WebApplication.CreateBuilder(args);
+var activityOptions = builder.Configuration
+                          .GetSection("CatActivity:Durations")
+                          .Get<CatActivityOptions>()
+                      ?? throw new InvalidOperationException(
+                          "CatActivity:Durations configuration is missing.");
+
+CatActivityService.Configure(activityOptions);
 
 var connectionString = builder.Configuration.GetConnectionString("CatCafe");
 
@@ -24,7 +31,6 @@ if (string.IsNullOrWhiteSpace(connectionString))
 builder.Services.AddGrpc();
 builder.Services.AddScoped<ICatRepository, PostgresCatRepository>();
 builder.Services.AddHostedService<CatActivityBackgroundService>();
-builder.Services.AddSingleton<CatActivityService>();
 
 // Register database context
 builder.Services.AddDbContext<CatCafeDbContext>(options =>
