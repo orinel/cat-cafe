@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+option csharp_namespace = "ScheduleService";
+
+package schedule;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+service Schedule {
+  // Schedule external activity (booking, grooming or vet_care)
+  rpc CreateActivity (CreateActivityRequest) returns (CreateActivityResponse);
+  // Cancel scheduled external activity (booking, grooming or vet_care)
+  rpc CancelActivity (CancelActivityRequest) returns (google.protobuf.Empty);
+  // Get info about scheduled activity
+  rpc GetActivity (GetActivityRequest) returns (GetActivityResponse);
+  // Get the schedule of external activities
+  rpc GetSchedule (GetScheduleRequest) returns (GetScheduleResponse);
+  // Check the cat's availability
+  rpc CheckCatAvailability (CheckCatAvailabilityRequest) returns (CheckCatAvailabilityResponse);
+}
+
+enum ActivityType {
+  UNSPECIFIED = 0;
+  BOOKING = 1;
+  GROOMING = 2;
+  VET_CARE = 3;
+}
+
+message ScheduledActivity {
+  int32 id = 1;
+  ActivityType activity_type = 2;
+  optional int32 visitor_id = 3;
+  int32 cat_id = 4;
+  google.protobuf.Timestamp start_time = 5;
+  google.protobuf.Timestamp end_time = 6;
+}
+
+message CreateActivityRequest {
+  optional int32 visitor_id = 1;
+  int32 cat_id = 2;
+  ActivityType activity_type = 3;
+  google.protobuf.Timestamp start_time = 4;
+  google.protobuf.Timestamp end_time = 5;
+}
+
+message CreateActivityResponse {
+  ScheduledActivity scheduled_activity = 1;
+}
+
+message CancelActivityRequest {
+  int32 scheduled_activity_id = 1;
+}
+
+message GetActivityRequest {
+  int32 scheduled_activity_id = 1;
+}
+
+message GetActivityResponse {
+  ScheduledActivity scheduled_activity = 1;
+}
+
+message GetScheduleRequest {
+  optional int32 visitor_id = 1;
+  optional int32 cat_id = 2;
+  google.protobuf.Timestamp start_time = 3;
+  google.protobuf.Timestamp end_time = 4;
+}
+
+message GetScheduleResponse {
+  repeated ScheduledActivity scheduled_activity = 1;
+}
+
+message CheckCatAvailabilityRequest {
+  int32 cat_id = 1;
+  google.protobuf.Timestamp start_time = 2;
+  google.protobuf.Timestamp end_time = 3;
+}
+
+message CheckCatAvailabilityResponse {
+  bool is_available = 1;
+}
