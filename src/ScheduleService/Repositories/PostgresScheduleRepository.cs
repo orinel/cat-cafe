@@ -67,6 +67,15 @@ public class PostgresScheduleRepository(ScheduleDbContext context)
         return activity == null ? null : MapToScheduledActivity(activity);
     }
 
+    public bool CheckCatAvailability(int catId, DateTimeOffset startNewActivityTime, DateTimeOffset endNewActivityTime)
+    {
+        return !context.Schedules
+            .Where(activity => activity.CatId == catId)
+            .Any(activity =>
+            activity.StartTime < endNewActivityTime &&
+            activity.EndTime > startNewActivityTime);
+    }
+
     public bool CancelActivity(int id)
     {
         var activity = context.Schedules.Find(id);
