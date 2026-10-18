@@ -6,6 +6,6 @@ public class ScheduleEntity
     public int? VisitorId { get; set; }
     public int CatId { get; set; }
     public ActivityType  ActivityType { get; set; }
-    public DateTime StartTime { get; set; }
-    public DateTime EndTime { get; set; }
+    public DateTimeOffset StartTime { get; set; }
+    public DateTimeOffset EndTime { get; set; }
 }
