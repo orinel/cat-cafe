@@ -13,7 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72
 		src\ScheduleService\Properties\launchSettings.json = src\ScheduleService\Properties\launchSettings.json
 		src\ScheduleService\Protos\schedule.proto = src\ScheduleService\Protos\schedule.proto
 		src\ScheduleService\ScheduleService.csproj = src\ScheduleService\ScheduleService.csproj
-		src\ScheduleService\Services\ScheduleService.cs = src\ScheduleService\Services\ScheduleService.cs
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CatService", "CatService", "{DB0E361E-332C-F80F-17AF-3599B1E0797B}"
