@@ -29,6 +29,14 @@ builder.Services.AddScoped<PostgresScheduleRepository>();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<ScheduleDbContext>();
+
+    dbContext.Database.Migrate();
+}
+
 // Configure the HTTP request pipeline.
 app.MapGrpcService<ScheduleGrpcService>();
 
