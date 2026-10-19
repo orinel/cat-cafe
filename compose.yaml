@@ -34,6 +34,43 @@ services:
     depends_on:
       catservice-db:
         condition: service_healthy
+        
+  scheduleservice-db:
+    image: postgres:17
+    container_name: scheduleservice-db
+    environment:
+      POSTGRES_DB: ${SCHEDULE_SERVICE_DB_NAME}
+      POSTGRES_USER: ${SCHEDULE_SERVICE_DB_USER}
+      POSTGRES_PASSWORD: ${SCHEDULE_SERVICE_DB_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - scheduleservice_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${SCHEDULE_SERVICE_DB_USER} -d ${SCHEDULE_SERVICE_DB_NAME}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      
+  schedule-service:
+    build:
+      context: .
+      dockerfile: src/ScheduleService/Dockerfile
+    container_name: schedule-service
+    environment:
+      ConnectionStrings__ScheduleService: "Host=scheduleservice-db;Port=5432;Database=${SCHEDULE_SERVICE_DB_NAME};Username=${SCHEDULE_SERVICE_DB_USER};Password=${SCHEDULE_SERVICE_DB_PASSWORD}"
+      ASPNETCORE_Kestrel__EndpointDefaults__Protocols: Http2
+    ports:
+      - "5038:8080"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      scheduleservice-db:
+        condition: service_healthy
 
 volumes:
   catservice_postgres_data:
+  scheduleservice_postgres_data:
